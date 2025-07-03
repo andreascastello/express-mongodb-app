@@ -27,6 +27,9 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Routes (à ajouter)
+app.get('/', (req, res) => {
+  res.send('Tout fonctionne bien 🚀');
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);

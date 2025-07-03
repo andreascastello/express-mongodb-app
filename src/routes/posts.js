@@ -22,8 +22,12 @@ router.post('/', async (req, res) => {
 // Récupérer tous les posts
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'email');
-    res.json(posts);
+    const posts = await Post.find().populate('author', 'email').lean();
+    const postsWithAuthor = posts.map(post => ({
+      ...post,
+      author: post.author || null
+    }));
+    res.json(postsWithAuthor);
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur.' });
   }
