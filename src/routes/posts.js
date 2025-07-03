@@ -5,13 +5,12 @@ import auth from '../middlewares/auth.js';
 const router = express.Router();
 
 // Créer un post
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { title, content } = req.body;
     const post = new Post({
       title,
-      content,
-      author: req.user.userId
+      content
     });
     await post.save();
     res.status(201).json(post);
