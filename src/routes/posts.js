@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 // Récupérer tous les posts
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'email').lean();
+    const posts = await Post.find().lean();
     const postsWithAuthor = posts.map(post => ({
       ...post,
       author: post.author || null
