@@ -1,0 +1,33 @@
+name: CI and Dispatch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Exemple d'étapes build/test pour Node.js
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+
+      - name: Dispatch to terraform-archi
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT_DISPATCH }}
+          repository: andreascastello/terraform-archi
+          event-type: trigger-ci
+
+      - name: Dispatch to integ-deploiement
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT_DISPATCH }}
+          repository: andreascastello/integ-deploiement
+          event-type: trigger-ci 
