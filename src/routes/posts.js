@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
     }));
     res.json(postsWithAuthor);
   } catch (err) {
+    console.error("Erreur GET /api/posts :", err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 });
