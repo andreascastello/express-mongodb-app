@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/expressapp
+      - MONGO_URI=mongodb://mongo:27017/blog
       - JWT_SECRET=un_secret_tres_long
       - PORT=3000
     depends_on:
