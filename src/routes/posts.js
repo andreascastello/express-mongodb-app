@@ -39,12 +39,17 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post non trouvé.' });
-    if (post.author.toString() !== req.user.userId && !req.user.isAdmin) {
+    
+    // Vérifier si l'utilisateur est admin ou l'auteur du post
+    const isAuthor = post.author && post.author.toString() === req.user.userId;
+    if (!isAuthor && !req.user.isAdmin) {
       return res.status(403).json({ message: 'Non autorisé.' });
     }
+    
     await post.deleteOne();
     res.json({ message: 'Post supprimé.' });
   } catch (err) {
+    console.error('Erreur suppression post:', err);
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 });
