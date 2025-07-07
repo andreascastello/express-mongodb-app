@@ -26,46 +26,33 @@ router.post('/register', async (req, res) => {
 });
 
 // Connexion
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Identifiants invalides.' });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Identifiants invalides.' });
-    }
-    const token = jwt.sign(
-      { userId: user._id, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur.' });
-  }
-});
+// Cette route ne doit PAS être utilisée pour l'admin ! L'admin passe par le backend Python.
+// router.post('/login', async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(401).json({ message: 'Identifiants invalides.' });
+//     }
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return res.status(401).json({ message: 'Identifiants invalides.' });
+//     }
+//     const token = jwt.sign(
+//       { userId: user._id, isAdmin: user.isAdmin },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '24h' }
+//     );
+//     res.json({ token });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Erreur serveur.' });
+//   }
+// });
 
-// Connexion admin (pour compatibilité avec l'API Python)
-router.post('/admin-login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    // Vérifier si c'est un admin (email spécifique ou logique métier)
-    if (email === 'admin@example.com' && password === 'admin123') {
-      const token = jwt.sign(
-        { userId: 'admin', isAdmin: true },
-        process.env.JWT_SECRET,
-        { expiresIn: '24h' }
-      );
-      res.json({ access_token: token }); // Même format que l'API Python
-    } else {
-      res.status(401).json({ message: 'Identifiants admin invalides.' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur.' });
-  }
-});
+// // Connexion admin (pour compatibilité avec l'API Python)
+// // Cette route n'est pas utilisée, l'admin passe par le backend Python uniquement.
+// router.post('/admin-login', async (req, res) => {
+//   // ... code supprimé ou commenté ...
+// });
 
 export default router; 
