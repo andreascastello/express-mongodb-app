@@ -41,9 +41,11 @@ router.delete('/:id', auth, async (req, res) => {
     if (!post) return res.status(404).json({ message: 'Post non trouvé.' });
     
     // Vérifier si l'utilisateur est admin ou l'auteur du post
-    const isAuthor = post.author && post.author.toString() === req.user.userId;
-    if (!isAuthor && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Non autorisé.' });
+    if (!req.user.isAdmin) {
+      const isAuthor = post.author && post.author.toString() === req.user.userId;
+      if (!isAuthor) {
+        return res.status(403).json({ message: 'Non autorisé.' });
+      }
     }
     
     await post.deleteOne();
