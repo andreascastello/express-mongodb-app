@@ -20,7 +20,7 @@ API RESTful moderne construite avec **Node.js/Express** et **MongoDB Atlas** pou
 - **Indexation** : Optimisée pour les requêtes fréquentes
 - **Sécurité** : Connexion sécurisée via variables d'environnement
 
-## 🚀 Installation et lancement
+## 🚀 Installation et lancement 
 
 ### Prérequis
 - Node.js 18+
